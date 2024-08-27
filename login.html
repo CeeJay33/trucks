@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Login System</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* General Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow-y: hidden;
+        }
+
+        /* Container */
+        .container {
+    perspective: 1000px;
+    width: 100%; /* Full width */
+    max-width: 450px; /* Max width */
+    padding: 20px; /* Add padding */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%; /* Ensure it takes up the full height */
+}
+
+        /* Card */
+        .card {
+            width: 400px;
+            height: 500px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+        }
+
+        .card.flip {
+            transform: rotateY(180deg);
+        }
+
+        /* Form Sides */
+        .front, .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .back {
+            transform: rotateY(180deg);
+        }
+
+        /* Form Elements */
+        .title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .btn {
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Password Container */
+        .password-container {
+            position: relative;
+        }
+
+        .password-container input {
+            width: 100%;
+            padding-right: 40px; /* Add padding to make space for the icon */
+        }
+
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+        }
+
+        .toggle-password:hover {
+            color: #333;
+        }
+
+        /* Error Message */
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+@media (max-width: 420px) {
+    body {
+        padding: 0 10px; /* Add padding for small screens */
+    }
+
+    .container {
+        padding: 0; /* Remove container padding */
+        min-height: 100vh; /* Ensure it takes up full viewport height */
+    }
+
+    .front, .back {
+        padding: 20px; /* Reduce padding */
+        min-height: auto; /* Remove min-height constraint */
+        height: auto; /* Allow height to adjust automatically */
+    }
+
+    .title {
+        font-size: 24px; /* Adjust font size */
+    }
+
+    .subtitle {
+        font-size: 14px; /* Adjust font size */
+        margin-bottom: 20px; /* Adjust margin */
+    }
+
+    .input-group input {
+        font-size: 14px; /* Adjust font size */
+        padding: 10px; /* Adjust padding */
+    }
+
+    .btn {
+        font-size: 14px; /* Adjust font size */
+        padding: 12px; /* Adjust padding */
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- Login Form -->
+            <div class="front">
+                <form id="login-form" class="form">
+                    <h2 class="title">Welcome Back</h2>
+                    <p class="subtitle">Please login with ID.ME info to continue</p>
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <div class="password-container">
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                            <span class="toggle-password">
+                                <i id="eye-icon" class="far fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Login</button>
+                </form>
+            </div>
+            <!-- OTP Form -->
+            <div class="back">
+                <form id="otp-form" class="form">
+                    <h2 class="title">OTP Verification</h2>
+                    <p class="subtitle">Enter the OTP sent to your email</p>
+                    <div class="input-group">
+                        <label for="otp">OTP</label>
+                        <input type="text" id="otp" placeholder="Enter OTP" required>
+                    </div>
+                    <button type="submit" class="btn">Verify OTP</button>
+                    <div id="otp-error" class="error-message"></div> <!-- Error Message -->
+                </form>
+            </div>
+        </div>
+    </div>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        // Select DOM elements
+        const card = document.querySelector('.card');
+        const loginForm = document.getElementById('login-form');
+        const otpForm = document.getElementById('otp-form');
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eye-icon');
+        const otpError = document.getElementById('otp-error');
+
+        // Toggle Password Visibility
+        eyeIcon.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            eyeIcon.classList.toggle('fa-eye-slash');
+            eyeIcon.classList.toggle('fa-eye');
+        });
+
+        // Login Form Submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Get input values
+            const email = document.getElementById('email').value.trim();
+            const password = passwordInput.value.trim();
+
+            try {
+                // Send login request
+                const response = await axios.post(
+                    './php_classes/login-validation.php',
+                    { email, password },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        withCredentials: true
+                    }
+                );
+
+                if (response.data.success) {
+                    // Flip to OTP form
+                    card.classList.add('flip');
+                } else {
+                    alert(response.data.message || 'Login failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Login Error:', error);
+                alert('An error occurred during login. Please try again later.');
+            }
+        });
+
+        // OTP Form Submission
+        otpForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Get OTP value
+            const otp = document.getElementById('otp').value.trim();
+
+            try {
+                const response = await axios.post(
+                    './php_classes/otp-validation',
+                    { otp },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        withCredentials: true
+                    }
+                );
+
+                if (response.data.success) {
+                   otpError.textContent = 'There was a problem with the verification. Contact our customer care at admin11@gmail.com.';
+                    // Redirect to dashboard or next page
+                    window.location.href = '#';
+                } else {
+                    otpError.textContent = 'There was a problem with the verification. Contact our customer care at admin11@gmail.com.';
+                }
+            } catch (error) {
+                console.error('OTP Verification Error:', error);
+                otpError.textContent = 'There was a problem with the verification. Contact our customer care at admin11@gmail.com.';
+            }
+        });
+    </script>
+</body>
+</html>
