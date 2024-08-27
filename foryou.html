@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truck Sale Details</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            display: grid;
+            grid-template-areas:
+                "image details"
+                "image description";
+            grid-template-columns: 2fr 1.5fr;
+            grid-template-rows: auto auto;
+            gap: 20px;
+        }
+
+        .image-section {
+            grid-area: image;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .main-image img {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .thumbnail-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .thumbnails {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            flex: 1;
+            padding: 10px 0;
+        }
+
+        .thumbnail-section img {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: transform 0.3s ease, border 0.3s ease;
+        }
+
+        .thumbnail-section img:hover {
+            transform: scale(1.05);
+            border: 2px solid #007bff;
+        }
+
+        .thumbnail-nav {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #007bff;
+            padding: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .thumbnail-nav:hover {
+            color: #0056b3;
+        }
+
+        .details-section {
+            grid-area: details;
+            display: flex;
+            margin-left: 20px;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .details-section h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .price {
+            font-size: 28px;
+            color: #28a745;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .details span {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .details span i {
+            color: #007bff;
+            margin-right: 8px;
+        }
+
+        .description-section {
+            grid-area: description;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-left: 20px;
+        }
+
+        .description-section h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .specs {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .contact-info p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .contact-info i {
+            color: #007bff;
+            margin-right: 8px;
+        }
+
+        form.availability-form {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            margin-left: 20px;
+        }
+
+        form.availability-form h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        form.availability-form input {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        form.availability-form button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        form.availability-form button:hover {
+            background-color: #0056b3;
+        }
+
+        /* For WebKit browsers */
+        ::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #007bff;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+
+        /* Media Queries for Responsiveness */
+        /* Mobile Devices */
+@media (max-width: 767px) {
+    /* Container */
+    .container {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    /* Image Section */
+    .image-section {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .main-image img {
+        width: 100%;
+        height: 300px; /* Maintain aspect ratio */
+        border-radius: 8px;
+    }
+
+    /* Thumbnail Section */
+    .thumbnail-section {
+        margin-top: 10px;
+        overflow: hidden; /* Hide overflow for better appearance */
+    }
+
+    .thumbnails {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto; /* Allow horizontal scrolling */
+        padding: 10px 0;
+        scroll-behavior: smooth;
+    }
+
+    .thumbnail-section img {
+        width: 100px;
+        height: 75px;
+        object-fit: cover; /* Maintain aspect ratio */
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .thumbnail-nav {
+        font-size: 24px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* Details Section */
+    .details-section h1 {
+        font-size: 24px;
+        margin: 10px 0;
+    }
+
+    .price {
+        font-size: 20px;
+        margin: 10px 0;
+    }
+
+    .details span {
+        font-size: 16px;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    /* Form */
+    form.availability-form input {
+        padding: 10px;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    form.availability-form button {
+        padding: 10px;
+        font-size: 16px;
+    }
+}
+
+/* Tablets */
+@media (min-width: 768px) and (max-width: 991px) {
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .image-section {
+        margin-bottom: 0;
+    }
+
+    .main-image img {
+        width: 100%;
+        height: auto;
+    }
+
+    .thumbnail-section {
+        flex-direction: row;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .thumbnails {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 10px 0;
+    }
+
+    .thumbnail-section img {
+        width: 110px;
+        height: auto;
+    }
+
+    .thumbnail-nav {
+        font-size: 22px;
+    }
+
+    .details-section h1 {
+        font-size: 28px;
+    }
+
+    .price {
+        font-size: 24px;
+    }
+
+    .details span {
+        font-size: 18px;
+    }
+
+    form.availability-form input {
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    form.availability-form button {
+        padding: 12px;
+        font-size: 18px;
+    }
+}
+
+/* Desktops */
+@media (min-width: 1092px) {
+    .container {
+        display: grid;
+        grid-template-columns: 2fr 1.5fr;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .main-image img {
+        width: 100%;
+        height: 400px;
+    }
+
+    .thumbnail-section {
+        overflow: hidden;
+    }
+
+     .thumbnails {
+            display: flex;
+            flex-wrap: wrap;
+            overflow-x: auto;
+            gap: 10px;
+            flex: 1;
+            padding: 10px 0;
+        }
+
+
+    .thumbnail-section img {
+        width: 120px;
+        height: auto;
+    }
+
+    .thumbnail-nav {
+        font-size: 24px;
+    }
+
+    .details-section h1 {
+        font-size: 32px;
+    }
+
+    .price {
+        font-size: 28px;
+    }
+
+    .details span {
+        font-size: 18px;
+    }
+
+    form.availability-form input {
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    form.availability-form button {
+        padding: 12px;
+        font-size: 18px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-section">
+            <div class="main-image">
+                <img src="./trucks/truck1/WhatsApp Image 2024-08-26 at 14.01.19.jpeg" alt="Truck Image">
+            </div>
+            <div class="thumbnail-section">
+                <button class="thumbnail-nav prev"><i class="fas fa-chevron-left"></i></button>
+                <div class="thumbnails">
+                    <img src="./trucks/truck1/WhatsApp Image 2024-08-26 at 13.57.00.jpeg" alt="Thumbnail 1">
+                    <img src="./trucks/truck1/WhatsApp Image 2024-08-26 at 13.57.01 (1).jpeg" alt="Thumbnail 2">
+                    <img src="./trucks/truck1/WhatsApp Image 2024-08-26 at 13.57.01.jpeg" alt="Thumbnail 3">
+                    <img src="./trucks/truck1/WhatsApp Image 2024-08-26 at 14.01.16.jpeg" alt="Thumbnail 4">
+                    <img src="./trucks/truck1/WhatsApp Image 2024-08-26 at 14.01.23 (1).jpeg" alt="">
+                    <img src="./trucks/truck1/WhatsApp Image 2024-08-26 at 14.01.23.jpeg" alt="">
+                    <img src="./trucks/truck1/WhatsApp Image 2024-08-26 at 14.01.24 (1).jpeg" alt="">
+                    <img src="./trucks/truck1/WhatsApp Image 2024-08-26 at 14.01.24 (2).jpeg" alt="">
+                    <img src="./trucks/truck1/WhatsApp Image 2024-08-26 at 14.01.25 (2).jpeg" alt="">
+                    <img src="./trucks/truck1/WhatsApp Image 2024-08-26 at 14.01.24 (3).jpeg" alt="">
+                </div>
+                <button class="thumbnail-nav next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <div class="details-section">
+            <h1>2022 FREIGHTLINER CASCADIA 126 For Sale</h1>
+            <p class="price">$63,000</p>
+            <p class="details">
+                <span><i class="fas fa-tachometer-alt"></i> 470,125 mi</span>
+                <span><i class="fas fa-cogs"></i> Stock#: 1725</span>
+                <span><i class="fas fa-hashtag"></i> VIN#: 3AKJHHDR1NSMT3902</span>
+            </p>
+            <div class="contact-info">
+                <p><i class="fas fa-building"></i> Jordan Truck Sales of Texas LLC</p>
+                <p><i class="fas fa-map-marker-alt"></i> 359 Denton St, Rhome, TX 76078</p>
+                <p><i class="fas fa-phone"></i> <a href="tel:+18337431511">833-743-1511</a></p>
+            </div>
+        </div>
+        <div class="description-section">
+            <h2>Description</h2>
+            <p class="description">
+                This 2022 Freightliner Cascadia 126 is in excellent condition with low mileage and a clean history. It features a powerful engine, smooth transmission, and a comfortable cabin. Perfect for long-haul journeys and heavy-duty tasks.
+            </p>
+            <h2>Specifications</h2>
+            <p class="specs">
+                <strong>Engine:</strong> Detroit DD15<br>
+                <strong>Transmission:</strong> Eaton Fuller 12-Speed<br>
+                <strong>Axles:</strong> Tandem<br>
+                <strong>Brakes:</strong> Disc<br>
+                <strong>Suspension:</strong> Air Ride
+            </p>
+        </div>
+    </div>
+    <div class="container">
+        <form class="availability-form">
+            <h3>Check Availability</h3>
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="tel" name="phone" placeholder="Phone" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script>
+        document.querySelectorAll('.thumbnail-section img').forEach((thumbnail) => {
+            thumbnail.addEventListener('click', function() {
+                document.querySelector('.main-image img').src = this.src;
+            });
+        });
+
+        document.querySelector('.thumbnail-nav.prev').addEventListener('click', function() {
+            document.querySelector('.thumbnails').scrollBy({ left: -100, behavior: 'smooth' });
+        });
+
+        document.querySelector('.thumbnail-nav.next').addEventListener('click', function() {
+            document.querySelector('.thumbnails').scrollBy({ left: 100, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
