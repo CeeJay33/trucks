@@ -613,7 +613,7 @@ document.querySelector('#form-container').addEventListener('submit', function(ev
 
     var formData = new FormData(this);
 
-    axios.post('./php_classes/truckInfo.php', formData, {
+    axios.get('https://syncu.infinityfreeapp.com/truckInfo.php', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         },
